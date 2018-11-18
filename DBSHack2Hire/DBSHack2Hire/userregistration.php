@@ -1,3 +1,8 @@
+<?php
+     require 'dbconfig/config.php';
+	 
+	 session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -203,8 +208,49 @@
 	   <input class="mail" type="text" placeholder="Phone number" name="mobile" required>
 	   <input class="mail" type="text" placeholder="City" name="city" required>
       <input class="pass1" type="password" placeholder="Password" name="pwd" required>
-	  <input class="pass1" type="password" placeholder="Confirm Password" name="pwd" required>
-      <input class="submit" type="submit" value="Sign up" align="center" required> </form>
+	  <input class="pass1" type="password" placeholder="Confirm Password" name="cpwd" required>
+      <input class="submit" type="submit" value="Sign up" align="center" name="submit_btn" required>
+	  
+	  <a href="#"><input type="button" id="back_btn" value="Back" /></a>
+<?php
+if(isset($_POST['submit_btn']))
+{
+//echo '<script type="text/javascript"> alert("sign up button clicked") </script>';
+$username=$_POST['uname'];
+$email=$_POST['email'];
+$mobile=$_POST['mobile'];
+$city=$_POST['city'];
+$password=$_POST['pwd'];
+$cpassword=$_POST['cpwd'];
+if($password==$cpassword)
+{
+$query="select * from user_table where username='$username'";
+$query_run=mysqli_query($con,$query);
+if(mysqli_num_rows($query_run)>0)
+{
+	echo '<script type="text/javascript"> alert("user already exits....") </script>';
+}
+else
+{
+	$query="insert into user_table($username,$email,$mobile,$password,$city) values('$username','$email','$mobile','$password','$city')";
+	$query_run=mysqli_query($con,$query);
+}
+	if($query_run)
+{
+	echo '<script type="text/javascript">alert("user registered...")</script>';
+}
+else
+{
+	echo '<script type="text/javascript"> alert("error!")</script>';
+}
+}
+else
+{
+		echo '<script type="text/javascript"> alert("password and confirm password doesnot match!")</script>';
+}
+}
+?>
+	  </form>
   </div>
 </body>
 </html>
